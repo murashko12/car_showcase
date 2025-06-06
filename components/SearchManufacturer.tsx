@@ -21,7 +21,7 @@ const SearchManufacturer = ({ manufacturer, setManufacturer }: SearchManufacture
     
     return (
         <div className="search-manufacturer">
-            <Combobox>
+            <Combobox value={manufacturer} onChange={setManufacturer}>
                 <div className="relative w-full">
                     
                     <ComboboxButton className="absolute top-[14px]">
@@ -50,15 +50,41 @@ const SearchManufacturer = ({ manufacturer, setManufacturer }: SearchManufacture
                     >
                         <ComboboxOptions>
                             {
-                                filteredManufacturers.length === 0 &&
-                                query !== "" && (
+                                filteredManufacturers.map((item) => (
                                     <ComboboxOption
-                                        value={query}
-                                        className="search-manufacturer__option"
+                                        key={item}
+                                        className={({active}) => `
+                                            relative search-manufacturer__option
+                                            ${active ? " bg-primary-blue text-white" : "text-gray-900"}
+                                        `}
+                                        value={item}
                                     >
-                                        
+                                        {({ selected, active }) => (
+                                            <>
+                                                <span
+                                                    className={`black truncate ${
+                                                        selected ? 'font-medium' : 'font-normal'
+                                                    }`}
+                                                >
+                                                    {item}
+                                                </span>
+                                                {selected ? (
+                                                    <span
+                                                        className={`
+                                                            absolute
+                                                            inset-y-0 left-0 flex
+                                                            items-center pl-3 ${
+                                                                active ? 'text-white' : 'text-teal-600'
+                                                            }
+                                                        `}
+                                                    >
+
+                                                    </span>
+                                                ) : null}
+                                            </>
+                                        )}
                                     </ComboboxOption>
-                                )
+                                ))
                             }
                         </ComboboxOptions>
                     </Transition>
